@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.goodnews.Resource
 import com.example.goodnews.api.AllNewsApi
 import com.example.goodnews.api.AllNewsApi.retrofitService
+import com.example.goodnews.data.Article
 import com.example.goodnews.data.News
 import com.example.goodnews.repo.AllNewsRepository
 import kotlinx.coroutines.launch
@@ -18,14 +19,16 @@ import retrofit2.Response
 class AllNewsViewModel(private val repository: AllNewsRepository): ViewModel() {
 
     private val _res = MutableLiveData<Resource<News>>()
-
     val res : LiveData<Resource<News>>
         get() = _res
 
     init {
+        viewModelScope.launch {
         repository.getTechNews()
-        repository.getSportNews()
+       // repository.getSportNews()
+        }
     }
+
    /** private fun getNews() {
         viewModelScope.launch {
             try {
@@ -36,17 +39,6 @@ class AllNewsViewModel(private val repository: AllNewsRepository): ViewModel() {
             }
         }
     }**/
-    private fun getTechNews()  = viewModelScope.launch {
-        _res.postValue(Resource.loading(null))
-        repository.getTechNews().let {
-
-            if (it.isSuccessful){
-                _res.postValue(Resource.success(it.body()))
-            }else{
-                _res.postValue(Resource.error(it.errorBody().toString(), null))
-            }
-        }
-    }
 
 
 

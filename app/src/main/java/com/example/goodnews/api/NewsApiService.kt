@@ -1,5 +1,6 @@
 package com.example.goodnews.api
 
+import com.example.goodnews.data.Article
 import com.example.goodnews.data.News
 import com.example.goodnews.data.Sport
 import com.example.goodnews.util.Util.API_KEY
@@ -11,6 +12,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 
@@ -24,14 +27,15 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-
+//@Query("Key") apiKey: String = API_KEY
 
 interface NewsApiService {
+    @Headers("apiKey:" + "API_KEY")
     @GET("v2/top-headlines?sources=techcrunch&apiKey=6d2c2a8589704ea298af624c6711506b")
-    fun getTechNews(@Query("Key") apiKey: String = API_KEY): Response<News>
+    suspend fun getTechNews( ): Response<News>
 
-    @GET("v2/top-headlines?country=us&category=sports&apiKey=6d2c2a8589704ea298af624c6711506b")
-    fun getSportNews(@Query("Key") apiKey: String = API_KEY): Response<Sport>
+   // @GET("v2/top-headlines?country=us&category=sports&apiKey=6d2c2a8589704ea298af624c6711506b")
+   // fun getSportNews(@Query("Key") apiKey: String = API_KEY): Response<Sport>
 }
 
 object AllNewsApi {
